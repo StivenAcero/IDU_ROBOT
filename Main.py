@@ -1,51 +1,25 @@
-from src.drive import get_credentials, get_sheets_service, read_sheet
-import json
-import os
+from src.idu_config import IduConfig
+from src.idu_service import IduService
+from src.sheet_service import SheetService
+import logging
+from src.logs import setup_logging
 
-def load_config(config_path='config.json'):
-    try:
-        with open(config_path, 'r', encoding='utf-8') as file:
-            config = json.load(file)
-        return config
-    except FileNotFoundError:
-        print(f"Error: No se encontró el archivo {config_path}")
-        return None
-    except json.JSONDecodeError as e:
-        print(f"Error: El archivo {config_path} no tiene formato JSON válido")
-        print(f"Detalle: {e.msg} en línea {e.lineno}, columna {e.colno}")
-        return None
+logger = logging.getLogger(__name__)
+
+config = IduConfig.load_config('config/config.json')
+sheet_service = SheetService()
+idu_service = IduService()
 
 def main():
+    setup_logging() 
+    data = sheet_service.read_sheet(config.spreadsheet_id, config.range_name)
+    encabezado = data[0] if data else []
+    if not data:
+        logger.warning("No se encontraron datos para procesar, fin del proceso.")
+        return 
+    _, registros_sin_estado, _ = sheet_service.validate_missing_files(data)
+    df_solicitudes = sheet_service.agrupar_chips_sin_estado(registros_sin_estado, max_por_grupo=5)
+    idu_service.procesar_chip_sin_estado(df_solicitudes,encabezado)
     
-    config = load_config('config/config.json')
-    if not config:
-        print("No se pudo cargar la configuración")
-        return
-    
-    SPREADSHEET_ID = config['SPREADSHEET_ID']
-    RANGE_NAME = 'SIN_IDENTIFICAR!A1:B'
-    
-    # 1. Obtener credenciales
-    print("Obteniendo credenciales...")
-    creds = get_credentials('config/')
-    
-    # 2. Crear servicio de Sheets
-    print("Creando servicio de Google Sheets...")
-    sheets_service = get_sheets_service(creds)
-    
-    # 3. Leer datos
-    print(f"Leyendo datos del rango {RANGE_NAME}...")
-    data = read_sheet(sheets_service, SPREADSHEET_ID, RANGE_NAME)
-    
-    # 4. Procesar datos
-    if data:
-        print(f"\n✓ Se encontraron {len(data)} filas")
-        print("\nDatos:")
-        for i, row in enumerate(data, 1):
-            print(f"Fila {i}: {row}")
-    else:
-        print("✗ No se encontraron datos.")
-
-
 if __name__ == "__main__":
     main()
