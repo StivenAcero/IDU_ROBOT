@@ -1,0 +1,11 @@
+[tool.pylint.main]
+ignore-patterns = [
+    "test_.*\\.py"
+]
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = [
+    "unused-variable",
+    "unused-argument",
+    "missing-function-docstring"
+]

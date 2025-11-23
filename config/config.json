@@ -1,3 +1,30 @@
 {
-    "SPREADSHEET_ID": "1UwqSTyesjm7e3uLDkNE0OBHH-tqFaKnjbqoM7MdYKXc"
+    "spreadsheet_id": "1LlB-boCmZUpVBebihcjjhRPNcBLfsAxvZyaFO0bGN7I",
+    "range_name": "SOLICITUDES",
+    "scopes": [
+        "https://www.googleapis.com/auth/spreadsheets.readonly",
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/gmail.modify",
+        "https://www.googleapis.com/auth/gmail.labels",
+        "https://www.googleapis.com/auth/gmail.readonly"
+    ],
+   "prefs": {
+        "download.prompt_for_download": false,
+        "download.directory_upgrade": true,
+        "safebrowsing.enabled": true,
+        "safebrowsing.disable_download_protection": true,
+        "profile.default_content_settings.popups": 0,
+        "profile.default_content_setting_values.automatic_downloads": 1
+    },
+    "url_chat": "https://www.idu.gov.co/page/chat-valorizacion",
+    "max_chips_por_solicitud": 5,
+    "mail_requests": "brayan.acero@davivienda.com",
+    "name_user": "Brayan Acero",
+    "label_email": "IDU",
+    "mailer_idu": "atencion.valorizacion@idu.gov.co",
+    "email_subject": "Certificado de estado de cuenta para trámite notarial (Paz y salvo IDU)",
+    "max_results_email": 100,
+    "download_path": "./descargas",
+    "drive_folder_id": "1ZnRBLff7iSGRN3c0pV3gw43EITpH4FXg"
+
 }
