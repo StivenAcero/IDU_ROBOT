@@ -12,7 +12,7 @@ idu_service = IduService()
 
 def main():
     setup_logging() 
-    data = sheet_service.read_sheet(config.spreadsheet_id, config.range_name)
+    data = sheet_service.read_sheet()
     encabezado = data[0] if data else []
     if not data:
         logger.warning("No se encontraron datos para procesar, fin del proceso.")
