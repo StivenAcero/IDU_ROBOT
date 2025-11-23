@@ -18,8 +18,9 @@ class UploadDrive:
     def get_current_month_folder(self, parent_folder_id):
         current_month = datetime.now().strftime('%m')  # Ej: '11'
         query = f"name contains '{current_month}' and '{parent_folder_id}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
-        
         try:
+            # El método spreadsheets() se agrega dinámicamente a la insancia de _service
+            # pylint: disable=maybe-no-member
             results = self._service.files().list(
                 q=query,
                 spaces='drive',
@@ -29,7 +30,6 @@ class UploadDrive:
             ).execute()
             
             folders = results.get('files', [])
-            
             # Filtrar carpetas que empiecen con el número del mes
             for folder in folders:
                 if folder['name'].startswith(current_month):
@@ -66,6 +66,8 @@ class UploadDrive:
             media = MediaFileUpload(file_path, resumable=True)
             for attempt in range(self._max_retries):
                 try:
+                    # El método spreadsheets() se agrega dinámicamente a la insancia de _service
+                    # pylint: disable=maybe-no-member
                     file = self._service.files().create(
                         body=file_metadata,
                         media_body=media,
