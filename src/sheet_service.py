@@ -42,7 +42,6 @@ class SheetService:
         if not data or len(data) < 2:
             return 0, [], 0
 
-        # Obtener índices de columnas
         try:
             header = data[0]
             indice_chips = header.index('CHIPS')
@@ -52,7 +51,7 @@ class SheetService:
             return 0, [], 0
 
         registros_sin_estado = [
-            self._crear_registro_sin_estado(fila, indice_chips, indice_estado)  # Sin 'i'
+            self._crear_registro_sin_estado(fila, i, indice_chips)  # ← Corregido: pasar 'i' como numero_fila
             for i, fila in enumerate(data[1:], start=2)
             if self._estado_vacio(fila, indice_estado)
         ]

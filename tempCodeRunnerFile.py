@@ -1,0 +1,1 @@
+config = IduConfig.load_config('config/config.json')
