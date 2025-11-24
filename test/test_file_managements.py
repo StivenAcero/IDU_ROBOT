@@ -9,7 +9,6 @@ from src.file_managements import FileManagements
 class TestCreateFolderIfNotExists(unittest.TestCase):
     
     def setUp(self):
-        """Configuración inicial"""
         self.instance = FileManagements()
         self.test_path = '/ruta/test/carpeta'
     
@@ -50,12 +49,10 @@ class TestCreateFolderIfNotExists(unittest.TestCase):
 @patch('src.file_managements.os.path.exists')
 
 class TestDeleteFiles (unittest.TestCase):
-    """Pruebas unitarias para el método delete_files"""
 
     def test_carpeta_no_existe(
         self, mock_exists, mock_listdir, mock_join, mock_isfile, mock_remove, mock_logger
     ):
-        """Cuando la carpeta no existe, retorna False y registra warning"""
         # Arrange
         instancia = FileManagements()
         ruta = '/carpeta/inexistente'
@@ -164,7 +161,6 @@ class TestDeleteFiles (unittest.TestCase):
     def test_error_al_listar_carpeta(
         self, mock_exists, mock_listdir, mock_join, mock_isfile, mock_remove, mock_logger
     ):
-        """Cuando ocurre error al listar la carpeta, retorna False"""
         # Arrange
         instancia = FileManagements()
         ruta = '/carpeta/test'
