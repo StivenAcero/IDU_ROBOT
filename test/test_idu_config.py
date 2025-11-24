@@ -9,15 +9,25 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 class TestIduConfigInit(unittest.TestCase):
     """Tests para el constructor __init__"""
     def test_init_default_values(self):
+        """Verifica que IduConfig inicializa con valores por defecto correctos"""
         config = IduConfig()
-        self.assertIsNone(config.spreadsheet_id)
-        self.assertIsNone(config.range_name)
-        self.assertIsNone(config.scopes)
-        self.assertIsNone(config.target_url)
-        self.assertIsNone(config.user_name)
-        self.assertIsNone(config.request_email)
+            
+            # Verificar strings vacíos
+        self.assertEqual(config.spreadsheet_id, '')
+        self.assertEqual(config.range_name, '')
+        self.assertEqual(config.target_url, '')
+        self.assertEqual(config.user_name, '')
+        self.assertEqual(config.request_email, '')
+        self.assertEqual(config.dowload_path, '')
+        self.assertEqual(config.drive_folder_id, '')
+        self.assertEqual(config.label_email, '')
+        self.assertEqual(config.mailer_idu, '')
+        self.assertEqual(config.email_subject, '')
+        self.assertIsInstance(config.scopes, list)
+        self.assertEqual(config.scopes, [])
         self.assertIsInstance(config.prefs, dict)
         self.assertEqual(config.prefs, {})
+        self.assertEqual(config.max_results_email, 500)
 
 class TestIduConfigFromDict(unittest.TestCase):
     
