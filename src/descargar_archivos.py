@@ -276,18 +276,7 @@ def mostrar_resumen_proceso(estadisticas):
 def descargar_adjuntos_correos_idu(service, nombre_etiqueta="IDU", 
                                     carpeta_destino="descargas_idu",
                                     archivar_despues=True):
-    """
-    Descarga archivos adjuntos de correos con etiqueta IDU del día actual y los archiva.
-    
-    Args:
-        service: Servicio de Gmail autenticado
-        nombre_etiqueta: Nombre de la etiqueta a buscar (default: "IDU")
-        carpeta_destino: Carpeta donde guardar los archivos (default: "descargas_idu")
-        archivar_despues: Si True, archiva los correos después de descargar (default: True)
-    
-    Returns:
-        dict: Estadísticas del proceso
-    """
+
     print("\n" + "="*80)
     print("DESCARGA DE ADJUNTOS DE CORREOS IDU - SOLO DÍA ACTUAL")
     print("="*80)

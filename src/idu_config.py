@@ -11,7 +11,7 @@ class IduConfig:
         self.user_name: str = ''
         self.request_email: str = ''
         self.prefs: Dict[str, Any] = {}
-        self.dowload_path: str = ''
+        self.download_path: str = ''
         self.drive_folder_id: str = ''
         self.label_email: str = ''  # ← Ahora es str, no None
         self.mailer_idu: str = ''
@@ -32,7 +32,7 @@ class IduConfig:
             config.user_name = config_data.get("name_user", '')
             config.request_email = config_data.get("mail_requests", '')
             config.prefs = config_data.get("prefs", {})
-            config.dowload_path = config_data.get("download_path", '')
+            config.download_path = config_data.get("download_path", '')
             config.drive_folder_id = config_data.get("drive_folder_id", '')
             config.label_email = config_data.get("label_email", '')
             config.mailer_idu = config_data.get("mailer_idu", '')

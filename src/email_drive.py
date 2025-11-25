@@ -1,360 +1,218 @@
+import logging
+from datetime import date
+from email.utils import parsedate_to_datetime
+
 from googleapiclient.discovery import build
 from src.google_credentials import GoogleCredentials
 from src.idu_config import IduConfig
-import logging
-from datetime import date
 
 
 MESES_ESPANOL = {
-        1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril',
-        5: 'Mayo', 6: 'Junio', 7: 'Julio', 8: 'Agosto',
-        9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'
-    }
+    1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril',
+    5: 'Mayo', 6: 'Junio', 7: 'Julio', 8: 'Agosto',
+    9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'
+}
+
 
 class EmailDrive:
-    def __init__(self) :
+    def __init__(self):
         self._config = IduConfig.load_config('config/config.json')
         self._creds = GoogleCredentials.get_credentials(self._config.scopes, root_path='config/')
         self._service = build('gmail', 'v1', credentials=self._creds)
         self._logger = logging.getLogger(__name__)
     
-    def get_id_label(self, label_name: str | None = None) -> str:
+    def get_or_create_label(self, label_name: str | None = None) -> str:
+        """Obtiene o crea una etiqueta."""
+        label_name = label_name or self._config.label_email
+        
         try:
-            # Determinar qué etiqueta buscar
-            label_to_find = label_name or self._config.label_email
-            
-            # pylint: disable=maybe-no-member
+             # pylint: disable=maybe-no-member
             results = self._service.users().labels().list(userId='me').execute()
-            labels = results.get('labels', [])
-            for lbl in labels:
-                if lbl['name'] == label_to_find:
-                    self._logger.info("Etiqueta encontrada: %s (ID: %s)", 
-                                    label_to_find, lbl['id'])
+            for lbl in results.get('labels', []):
+                if lbl['name'] == label_name:
                     return lbl['id']
             
-            self._logger.warning("Etiqueta '%s' no encontrada", label_to_find)
-            return ''
-        except Exception as e:
-            self._logger.error("Error al buscar etiqueta: %s", e, exc_info=True)
-            return ''
-        
-    def search_emails_today(self) -> list[str]:
-        """Busca correos del día actual según configuración."""
-        all_emails = []
-        fecha_hoy = date.today().strftime('%Y/%m/%d')
-        
-        # Búsqueda con mailer_idu
-        if self._config.mailer_idu:
-            try:
-                query = f"subject:{self._config.mailer_idu} after:{fecha_hoy}"
-                # pylint: disable=maybe-no-member
-                results = self._service.users().messages().list(
-                    userId='me',
-                    q=query,
-                    maxResults=self._config.max_results_email  # Desde config
-                ).execute()
-                messages = results.get('messages', [])
-                all_emails.extend([msg['id'] for msg in messages])
-            except Exception as e:
-                self._logger.error(
-                    "Error al buscar correos con asunto '%s': %s", 
-                    self._config.mailer_idu, 
-                    e, 
-                    exc_info=True
-                )
-        
-        # Búsqueda con email_subject
-        if self._config.email_subject:
-            try:
-                query = f"subject:{self._config.email_subject} after:{fecha_hoy}"
-                # pylint: disable=maybe-no-member
-                results = self._service.users().messages().list(
-                    userId='me',
-                    q=query,
-                    maxResults=self._config.max_results_email  # Desde config
-                ).execute()
-                messages = results.get('messages', [])
-                all_emails.extend([msg['id'] for msg in messages])
-            except Exception as e:
-                self._logger.error(
-                    "Error al buscar correos con asunto '%s': %s", 
-                    self._config.email_subject, 
-                    e, 
-                    exc_info=True
-                )
-        
-        # Eliminar duplicados
-        unique_emails = list(set(all_emails))
-        self._logger.info(
-            "Correos encontrados para el día %s: %d", 
-            fecha_hoy, 
-            len(unique_emails)
-        )
-        return unique_emails
-    
-    def add_label_to_emails(self,message_ids, label_ids, verificar=True) :
-        if not message_ids:
-            return {'labeled': 0, 'failed': 0}
-        emails_to_tag = message_ids
-        if verificar:
-            emails_to_tag = []
-            for msg_id in message_ids:
-                try:
-                    # pylint: disable=maybe-no-member
-                    message = self._service.users().messages().get(
-                        userId='me',
-                        id=msg_id,
-                        format='metadata',
-                        metadataHeaders=[]
-                    ).execute()
-                    existing_labels = message.get('labelIds', [])
-                    if not all(label in existing_labels for label in label_ids):
-                        emails_to_tag.append(msg_id)
-                except Exception as e:
-                    self._logger.error(f"Error al verificar etiquetas del correo {msg_id}: {e}", exc_info=True)
-                    
-        if not emails_to_tag:
-                self._logger.info("No hay correos para etiquetar después de la verificación.")
-                return {'labeled': 0, 'failed': 0}
-        try:
-            self._logger.info(f"Etiquetando {len(emails_to_tag)} correos...")
-            self._service.users().messages().batchModify(  # pylint: disable=maybe-no-member
+            self._logger.info("Creando etiqueta: %s", label_name)
+             # pylint: disable=maybe-no-member
+            created = self._service.users().labels().create(
                 userId='me',
                 body={
-                    'ids': emails_to_tag,
-                    'addLabelIds': label_ids
-                }
-            ).execute()
-            return {'labeled': len(emails_to_tag), 'failed': 0}
-        except Exception as e:
-            self._logger.error(f"Error al etiquetar correos: {e}", exc_info=True)
-            return {'labeled': 0, 'failed': len(emails_to_tag)}
-        
-    def create_nested_label(self, parent_label_name: str, new_label_name: str) -> str:
-        complete_name = f"{parent_label_name}/{new_label_name}"
-        # Verificar si ya existe
-        label_id = self.get_id_label(complete_name)
-        if label_id:
-            self._logger.info("La etiqueta '%s' ya existe con ID: %s", complete_name, label_id)
-            return label_id
-        try:
-            self._logger.info("Creando etiqueta: %s", complete_name)
-            # pylint: disable=maybe-no-member
-            created_label = self._service.users().labels().create(
-                userId='me',
-                body={
-                    'name': complete_name,
+                    'name': label_name,
                     'labelListVisibility': 'labelShow',
                     'messageListVisibility': 'show'
                 }
             ).execute()
+            return created['id']
             
-            self._logger.info("Etiqueta '%s' creada exitosamente", complete_name)
-            return created_label['id']
         except Exception as e:
-            # Si la etiqueta ya existe (condición de carrera), intentar obtenerla
             if 'already exists' in str(e).lower():
-                self._logger.warning("La etiqueta ya existe, obteniendo ID...")
-                return self.get_id_label(complete_name)
-            
-            self._logger.error("Error al crear etiqueta '%s': %s", complete_name, e, exc_info=True)
+                return self.get_or_create_label(label_name)
+            self._logger.error("Error con etiqueta '%s': %s", label_name, e)
             return ''
-        
-    def get_date_email(self, message_id: str) -> str:
-        try:
-            # pylint: disable=maybe-no-member
-            message = self._service.users().messages().get(
-                userId='me',
-                id=message_id,
-                format='metadata',
-                metadataHeaders=['Date']
-            ).execute()
-                
-            headers = message.get('payload', {}).get('headers', [])
-            for header in headers:
-                if header['name'] == 'Date':
-                    return header['value']
-            self._logger.warning("Fecha no encontrada en el correo %s", message_id)
-            return ''
-        except Exception as e:
-            self._logger.error(
-                "Error al obtener fecha %s: %s", 
-                message_id, 
-                e, 
-                exc_info=True
-            )
-            return ''
-      
     
-    def label_idu_emails_per_month(self) -> dict:
-        """Etiqueta correos IDU del día actual por mes."""
-        self._logger.info("Iniciando etiquetado de correos IDU - Día: %s", 
-                        date.today().strftime('%d/%m/%Y'))
+    def search_emails_today(self) -> list[str]:
+        """Busca correos del día actual."""
+        fecha_hoy = date.today().strftime('%Y/%m/%d')
+        all_emails = []
         
-        # Validar etiqueta padre
-        label_padre_id = self.get_id_label()
-        if not label_padre_id:
-            return self._error_etiqueta_no_existe()
+        for subject in [self._config.mailer_idu, self._config.email_subject]:
+            if subject:
+                all_emails.extend(self._search_by_subject(subject, fecha_hoy))
         
-        # Buscar correos
-        todos_correos = self.search_emails_today()
-        if not todos_correos:
-            return self._sin_correos_encontrados()
+        unique_emails = list(set(all_emails))
+        self._logger.info("Correos encontrados: %d", len(unique_emails))
+        return unique_emails
+    
+    def _search_by_subject(self, subject: str, fecha: str) -> list[str]:
+        """Busca correos por asunto y fecha."""
+        try:
+             # pylint: disable=maybe-no-member
+            results = self._service.users().messages().list(
+                userId='me',
+                q=f"subject:{subject} after:{fecha}",
+                maxResults=self._config.max_results_email
+            ).execute()
+            return [msg['id'] for msg in results.get('messages', [])]
+        except Exception as e:
+            self._logger.error("Error buscando '%s': %s", subject, e)
+            return []
+    
+    def add_label_to_emails(self, message_ids: list, label_ids: list, verificar: bool = True) -> dict:
+        """Agrega etiquetas a correos."""
+        if not message_ids:
+            return {'labeled': 0, 'failed': 0}
         
-        # Agrupar y procesar
-        correos_por_mes, correos_sin_fecha = self._agrupar_correos_por_mes(todos_correos)
-        estadisticas, total_etiquetados = self._procesar_correos_agrupados(
-            correos_por_mes, correos_sin_fecha, label_padre_id
-        )
+        emails_to_tag = self._filter_emails_to_tag(message_ids, label_ids) if verificar else message_ids
         
-        # Log resumen
-        self._log_resumen(todos_correos, total_etiquetados, estadisticas)
+        if not emails_to_tag:
+            return {'labeled': 0, 'failed': 0}
         
-        return {
-            'exitoso': True,
-            'total_encontrados': len(todos_correos),
-            'procesados': total_etiquetados,
-            'por_mes': estadisticas
-        }
-
-
-    def _error_etiqueta_no_existe(self) -> dict:
-        error_msg = f"La etiqueta '{self._config.label_email}' no existe"
-        self._logger.error(error_msg)
-        return {'exitoso': False, 'error': error_msg}
-
-
-    def _sin_correos_encontrados(self) -> dict:
-        """Retorna resultado cuando no hay correos."""
-        self._logger.warning("No se encontraron correos del día actual")
-        return {'exitoso': True, 'total_encontrados': 0, 'procesados': 0}
-
-
-    def _agrupar_correos_por_mes(self, todos_correos: list[str]) -> tuple[dict, list]:
-        """Agrupa correos por año y mes."""
-        self._logger.info("Agrupando %d correos por mes", len(todos_correos))
+        return self._batch_modify_labels(emails_to_tag, label_ids)
+    
+    def _filter_emails_to_tag(self, message_ids: list, label_ids: list) -> list:
+        """Filtra correos que necesitan etiquetas."""
+        emails_to_tag = []
+        for msg_id in message_ids:
+            try:
+                 # pylint: disable=maybe-no-member
+                message = self._service.users().messages().get(
+                    userId='me', id=msg_id, format='metadata'
+                ).execute()
+                existing = message.get('labelIds', [])
+                if not all(label in existing for label in label_ids):
+                    emails_to_tag.append(msg_id)
+            except Exception as e:
+                self._logger.error("Error verificando correo %s: %s", msg_id, e)
+        return emails_to_tag
+    
+    def _batch_modify_labels(self, message_ids: list, label_ids: list) -> dict:
+        """Aplica etiquetas en batch."""
+        try:
+             # pylint: disable=maybe-no-member
+            self._service.users().messages().batchModify(
+                userId='me',
+                body={'ids': message_ids, 'addLabelIds': label_ids}
+            ).execute()
+            return {'labeled': len(message_ids), 'failed': 0}
+        except Exception as e:
+            self._logger.error("Error etiquetando: %s", e)
+            return {'labeled': 0, 'failed': len(message_ids)}
+    
+    def get_email_date(self, message_id: str) -> tuple:
+        """Obtiene año y mes del correo."""
+        try:
+             # pylint: disable=maybe-no-member
+            message = self._service.users().messages().get(
+                userId='me', id=message_id, format='metadata', metadataHeaders=['Date']
+            ).execute()
+            
+            for header in message.get('payload', {}).get('headers', []):
+                if header['name'] == 'Date':
+                    fecha = parsedate_to_datetime(header['value'])
+                    return (fecha.year, fecha.month)
+        except Exception as e:
+            self._logger.error("Error obteniendo fecha %s: %s", message_id, e)
+        
+        return (None, None)
+    
+    def _group_emails_by_month(self, message_ids: list) -> tuple[dict, list]:
+        """Agrupa correos por mes y separa los sin fecha."""
         correos_por_mes = {}
         correos_sin_fecha = []
         
-        for msg_id in todos_correos:
-            self._clasificar_correo_por_fecha(msg_id, correos_por_mes, correos_sin_fecha)
-        
-        self._logger.info("Encontrados %d meses diferentes", len(correos_por_mes))
-        if correos_sin_fecha:
-            self._logger.warning("%d correos sin fecha", len(correos_sin_fecha))
+        for msg_id in message_ids:
+            anio, mes = self.get_email_date(msg_id)
+            if anio and mes:
+                correos_por_mes.setdefault((anio, mes), []).append(msg_id)
+            else:
+                correos_sin_fecha.append(msg_id)
         
         return correos_por_mes, correos_sin_fecha
-
-
-    def _clasificar_correo_por_fecha(self, msg_id: str, correos_por_mes: dict, 
-                                    correos_sin_fecha: list) -> None:
-        """Clasifica un correo según su fecha."""
-        fecha_str = self.get_date_email(msg_id)
-        if not fecha_str:
-            correos_sin_fecha.append(msg_id)
-            return
-        
-        anio, mes = self._extraer_anio_mes(fecha_str)
-        if anio and mes:
-            clave = (anio, mes)
-            correos_por_mes.setdefault(clave, []).append(msg_id)
-        else:
-            correos_sin_fecha.append(msg_id)
-
-
-    def _procesar_correos_agrupados(self, correos_por_mes: dict, 
-                                    correos_sin_fecha: list, 
-                                    label_padre_id: str) -> tuple[dict, int]:
-        """Procesa correos agrupados y retorna estadísticas."""
+    
+    def _process_monthly_emails(self, correos_por_mes: dict, label_padre_id: str) -> tuple[dict, int]:
+        """Procesa y etiqueta correos agrupados por mes."""
         estadisticas = {}
-        total_etiquetados = 0
-        
-        # Procesar correos con fecha
-        total_etiquetados += self._procesar_correos_con_fecha(
-            correos_por_mes, label_padre_id, estadisticas
-        )
-        
-        # Procesar correos sin fecha
-        if correos_sin_fecha:
-            total_etiquetados += self._procesar_correos_sin_fecha(
-                correos_sin_fecha, label_padre_id, estadisticas
-            )
-        
-        return estadisticas, total_etiquetados
-
-
-    def _procesar_correos_con_fecha(self, correos_por_mes: dict, 
-                                    label_padre_id: str, 
-                                    estadisticas: dict) -> int:
-        """Procesa correos que tienen fecha válida."""
         total_etiquetados = 0
         
         for (anio, mes), message_ids in sorted(correos_por_mes.items()):
             nombre_mes = MESES_ESPANOL.get(mes, str(mes))
-            self._logger.info("Procesando %s %d - %d correos", nombre_mes, anio, len(message_ids))
+            label_mes = f"{self._config.label_email}/{nombre_mes} {anio}"
+            label_mes_id = self.get_or_create_label(label_mes)
             
-            label_mes_id = self.create_nested_label(
-                self._config.label_email, 
-                f"{nombre_mes} {anio}"
-            )
-            
-            if not label_mes_id:
-                self._logger.error("No se pudo crear etiqueta para %s/%d", mes, anio)
-                continue
-            
-            resultado = self.add_label_to_emails(
-                message_ids, 
-                [label_padre_id, label_mes_id],
-                verificar=True
-            )
-            
-            total_etiquetados += resultado['labeled']
-            estadisticas[f"{nombre_mes} {anio}"] = {
-                'total': len(message_ids),
-                'nuevos': resultado['labeled'],
-                'fallidos': resultado['failed']
+            if label_mes_id:
+                resultado = self.add_label_to_emails(message_ids, [label_padre_id, label_mes_id])
+                total_etiquetados += resultado['labeled']
+                estadisticas[f"{nombre_mes} {anio}"] = {
+                    'total': len(message_ids),
+                    'nuevos': resultado['labeled']
+                }
+        
+        return estadisticas, total_etiquetados
+    
+    def _process_dateless_emails(self, correos_sin_fecha: list, label_padre_id: str) -> tuple[dict, int]:
+        """Procesa correos sin fecha."""
+        if not correos_sin_fecha:
+            return {}, 0
+        
+        resultado = self.add_label_to_emails(correos_sin_fecha, [label_padre_id])
+        estadisticas = {
+            'Sin fecha': {
+                'total': len(correos_sin_fecha),
+                'nuevos': resultado['labeled']
             }
-        
-        return total_etiquetados
-
-
-    def _procesar_correos_sin_fecha(self, correos_sin_fecha: list, 
-                                    label_padre_id: str, 
-                                    estadisticas: dict) -> int:
-        """Procesa correos sin fecha válida."""
-        self._logger.info("Procesando %d correos sin fecha", len(correos_sin_fecha))
-        
-        resultado = self.add_label_to_emails(
-            correos_sin_fecha, 
-            [label_padre_id],
-            verificar=True
-        )
-        
-        estadisticas['Sin fecha'] = {
-            'total': len(correos_sin_fecha),
-            'nuevos': resultado['labeled'],
-            'fallidos': resultado['failed']
         }
+        return estadisticas, resultado['labeled']
+    
+    def label_idu_emails_per_month(self) -> dict:
+        """Etiqueta correos IDU del día actual por mes."""
+        self._logger.info("Iniciando etiquetado - Día: %s", date.today().strftime('%d/%m/%Y'))
         
-        return resultado['labeled']
-
-
-    def _log_resumen(self, todos_correos: list, total_etiquetados: int, 
-                    estadisticas: dict) -> None:
-        """Registra el resumen del procesamiento."""
-        self._logger.info("Resumen - Total correos: %d, Etiquetados: %d", 
-                        len(todos_correos), total_etiquetados)
+        # Validar etiqueta padre
+        label_padre_id = self.get_or_create_label()
+        if not label_padre_id:
+            return {'exitoso': False, 'error': 'No se pudo crear etiqueta padre'}
         
-        for mes, stats in estadisticas.items():
-            self._logger.info("%s: %d/%d nuevos", mes, stats['nuevos'], stats['total'])
-
-
-    def _extraer_anio_mes(self, fecha_str: str) -> tuple:
-        """Extrae año y mes de una fecha RFC 2822."""
-        try:
-            from email.utils import parsedate_to_datetime
-            fecha = parsedate_to_datetime(fecha_str)
-            return (fecha.year, fecha.month)
-        except Exception as e:
-            self._logger.error("Error al parsear fecha '%s': %s", fecha_str, e)
-            return (None, None)
+        # Buscar correos
+        correos = self.search_emails_today()
+        if not correos:
+            return {'exitoso': True, 'total_encontrados': 0, 'procesados': 0}
+        
+        # Agrupar por mes
+        correos_por_mes, correos_sin_fecha = self._group_emails_by_month(correos)
+        
+        # Procesar correos
+        estadisticas_mes, total_mes = self._process_monthly_emails(correos_por_mes, label_padre_id)
+        estadisticas_sin, total_sin = self._process_dateless_emails(correos_sin_fecha, label_padre_id)
+        
+        # Combinar resultados
+        estadisticas = {**estadisticas_mes, **estadisticas_sin}
+        total_etiquetados = total_mes + total_sin
+        
+        self._logger.info("Resumen - Total: %d, Etiquetados: %d", len(correos), total_etiquetados)
+        
+        return {
+            'exitoso': True,
+            'total_encontrados': len(correos),
+            'procesados': total_etiquetados,
+            'por_mes': estadisticas
+        }
