@@ -18,7 +18,7 @@ class TestIduConfigInit(unittest.TestCase):
         self.assertEqual(config.target_url, '')
         self.assertEqual(config.user_name, '')
         self.assertEqual(config.request_email, '')
-        self.assertEqual(config.dowload_path, '')
+        self.assertEqual(config.download_path, '')
         self.assertEqual(config.drive_folder_id, '')
         self.assertEqual(config.label_email, '')
         self.assertEqual(config.mailer_idu, '')

@@ -1,46 +1,6 @@
 import unittest
 from unittest.mock import patch
 from src.file_managements import FileManagements
-
-
-@patch('src.file_managements.logger')
-@patch('src.file_managements.os.makedirs')
-@patch('src.file_managements.os.path.exists')
-class TestCreateFolderIfNotExists(unittest.TestCase):
-    
-    def setUp(self):
-        self.instance = FileManagements()
-        self.test_path = '/ruta/test/carpeta'
-    
-    def test_create_folder_success(self, mock_exists, mock_makedirs, mock_logger):
-        """Prueba: Carpeta no existe y se crea exitosamente"""
-        mock_exists.return_value = False
-        result = self.instance.create_folder_if_not_exists(self.test_path)
-        self.assertTrue(result)
-        mock_exists.assert_called_once_with(self.test_path)
-        mock_makedirs.assert_called_once_with(self.test_path)
-        mock_logger.info.assert_called_once_with("Carpeta creada: %s", self.test_path)
-    
-    def test_folder_already_exists(self, mock_exists, mock_makedirs, mock_logger):
-        """Prueba: Carpeta ya existe"""
-        mock_exists.return_value = True
-        result = self.instance.create_folder_if_not_exists(self.test_path)
-        self.assertTrue(result)
-        mock_exists.assert_called_once_with(self.test_path)
-        mock_makedirs.assert_not_called()
-        mock_logger.info.assert_called_once_with("La carpeta ya existe: %s", self.test_path)
-        
-    
-    def test_create_folder_exception_on_exists_check(self, mock_exists, mock_makedirs, mock_logger):
-        """Prueba: Error al verificar si la carpeta existe"""
-        mock_exists.side_effect = Exception("Unexpected error")
-        
-        result = self.instance.create_folder_if_not_exists(self.test_path)
-        
-        self.assertFalse(result)
-        mock_exists.assert_called_once_with(self.test_path)
-        mock_logger.error.assert_called_once()
-        
 @patch('src.file_managements.logger')
 @patch('src.file_managements.os.remove')
 @patch('src.file_managements.os.path.isfile')

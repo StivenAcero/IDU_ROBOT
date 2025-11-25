@@ -10,19 +10,6 @@ class FileManagements:
     def __init__(self):
         self._config = IduConfig.load_config('config/config.json')
         
-    def create_folder_if_not_exists(self, ruta_carpeta):
-        try:
-            if not os.path.exists(ruta_carpeta):
-                os.makedirs(ruta_carpeta)
-                logger.info("Carpeta creada: %s", ruta_carpeta)
-            else:
-                logger.info("La carpeta ya existe: %s", ruta_carpeta)
-            return True
-
-        except Exception as e:
-            logger.error("Error al crear la carpeta %s: %s", ruta_carpeta, e)
-            return False
-
     def delete_files(self, ruta_carpeta):
         try:
             if not os.path.exists(ruta_carpeta):
