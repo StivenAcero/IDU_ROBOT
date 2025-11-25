@@ -12,7 +12,6 @@ class FileDrive:
         self._config = IduConfig.load_config('config/config.json')
         self._creds = GoogleCredentials.get_credentials(self._config.scopes, root_path='config/')
         self._gmail_service = build('gmail', 'v1', credentials=self._creds)
-        self._drive_service = build('drive', 'v3', credentials=self._creds)
         self._logger = logging.getLogger(__name__)
     
     def get_or_create_label(self, label_name: str) -> str:
