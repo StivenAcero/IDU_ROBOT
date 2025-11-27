@@ -17,6 +17,7 @@ class IduConfig:
         self.mailer_idu: str = ''
         self.email_subject: str = ''
         self.max_results_email: int = 500
+        self.drive_folder_id: str = ''
 
     @staticmethod
     def load_config(config_path: str = "config/config.json") -> 'IduConfig':
@@ -38,6 +39,7 @@ class IduConfig:
             config.mailer_idu = config_data.get("mailer_idu", '')
             config.email_subject = config_data.get("email_subject", '')
             config.max_results_email = config_data.get("max_results_email")
+            config.drive_folder_id = config_data.get("drive_folder_id")
             
             return config
         except FileNotFoundError as e:
