@@ -1,4 +1,3 @@
-
 from src.idu_config import IduConfig
 from src.sheet_service import SheetService
 from src.idu_navigator import IduNavigator
@@ -33,9 +32,15 @@ class IduService:
                     logger.error("No se pudo preparar el formulario para la solicitud %s", idx)
                     continue
 
-                name_and_email_ok = self._driver.rellenar_formulario_usuario(
-                    tabla_form, self._config.user_name, self._config.request_email
+                name_ok = self._driver.rellenar_campo_nombre(
+                    tabla_form, self._config.user_name
                 )
+
+                email_ok = self._driver.rellenar_campo_email(
+                    tabla_form, self._config.request_email
+                )
+
+                name_and_email_ok = name_ok and email_ok
 
                 mensaje_ok = self._driver.rellenar_campo_mensaje_solicitud(
                     tabla_form, solicitud_row

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from typing import cast
-from unittest.mock import Mock, patch,MagicMock
+from unittest.mock import Mock, patch, MagicMock
 from src.idu_service import IduService
 
 
@@ -52,7 +52,7 @@ class TestIduServiceProcesarChipSinEstado:
         # Assert
         mock_logger.info.assert_called_once_with("Todos los registros tienen ESTADO asignado")
         service._driver = cast(MagicMock, service._driver)
-        service._driver.navegar_a_url.assert_not_called()# pylint: disable=no-member
+        service._driver.navegar_a_url.assert_not_called()  # pylint: disable=no-member
 
     def test_procesa_solicitud_exitosamente(
         self, mock_logger, mock_navigator, mock_config_load, mock_sheet_service,
@@ -68,7 +68,8 @@ class TestIduServiceProcesarChipSinEstado:
         
         tabla_form_mock = Mock()
         mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
-        mock_driver.rellenar_formulario_usuario.return_value = True
+        mock_driver.rellenar_campo_nombre.return_value = True
+        mock_driver.rellenar_campo_email.return_value = True
         mock_driver.rellenar_campo_mensaje_solicitud.return_value = True
         mock_driver.click_iniciar_chat.return_value = True
         
@@ -81,7 +82,8 @@ class TestIduServiceProcesarChipSinEstado:
         # Assert
         mock_driver.navegar_a_url.assert_called_once_with(mock_config.target_url)
         mock_driver.realizar_clicks_secuenciales.assert_called_once()
-        mock_driver.rellenar_formulario_usuario.assert_called_once()
+        mock_driver.rellenar_campo_nombre.assert_called_once()
+        mock_driver.rellenar_campo_email.assert_called_once()
         mock_driver.click_iniciar_chat.assert_called_once()
         mock_sheet.actualizar_estado_chips.assert_called_once_with(
             mock_config.spreadsheet_id,
@@ -114,7 +116,8 @@ class TestIduServiceProcesarChipSinEstado:
         # Assert
         mock_logger.error.assert_called()
         # Con el continue, no debe intentar rellenar el formulario
-        mock_driver.rellenar_formulario_usuario.assert_not_called()
+        mock_driver.rellenar_campo_nombre.assert_not_called()
+        mock_driver.rellenar_campo_email.assert_not_called()
         mock_driver.rellenar_campo_mensaje_solicitud.assert_not_called()
         mock_driver.click_iniciar_chat.assert_not_called()
         # No debe actualizar estado si falló
@@ -122,11 +125,11 @@ class TestIduServiceProcesarChipSinEstado:
         # Pero sí debe reiniciar el navegador
         mock_driver.reiniciar_navegador.assert_called_once()
 
-    def test_error_al_rellenar_formulario_usuario(
+    def test_error_al_rellenar_nombre(
         self, mock_logger, mock_navigator, mock_config_load, mock_sheet_service,
         mock_config, encabezado, df_con_datos
     ):
-        """Cuando falla el llenado de usuario, no continúa"""
+        """Cuando falla el llenado del nombre, no continúa"""
         # Arrange
         mock_config_load.return_value = mock_config
         mock_driver = Mock()
@@ -136,7 +139,35 @@ class TestIduServiceProcesarChipSinEstado:
         
         tabla_form_mock = Mock()
         mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
-        mock_driver.rellenar_formulario_usuario.return_value = False
+        mock_driver.rellenar_campo_nombre.return_value = False
+        
+        service = IduService()
+        df_una_solicitud = df_con_datos.iloc[[0]]
+
+        # Act
+        service.procesar_chip_sin_estado(df_una_solicitud, encabezado)
+
+        # Assert
+        mock_driver.rellenar_campo_email.assert_called_once()
+        mock_driver.click_iniciar_chat.assert_not_called()
+        mock_sheet.actualizar_estado_chips.assert_not_called()
+
+    def test_error_al_rellenar_email(
+        self, mock_logger, mock_navigator, mock_config_load, mock_sheet_service,
+        mock_config, encabezado, df_con_datos
+    ):
+        """Cuando falla el llenado del email, no continúa"""
+        # Arrange
+        mock_config_load.return_value = mock_config
+        mock_driver = Mock()
+        mock_navigator.return_value = mock_driver
+        mock_sheet = Mock()
+        mock_sheet_service.return_value = mock_sheet
+        
+        tabla_form_mock = Mock()
+        mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
+        mock_driver.rellenar_campo_nombre.return_value = True
+        mock_driver.rellenar_campo_email.return_value = False
         
         service = IduService()
         df_una_solicitud = df_con_datos.iloc[[0]]
@@ -162,7 +193,8 @@ class TestIduServiceProcesarChipSinEstado:
         
         tabla_form_mock = Mock()
         mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
-        mock_driver.rellenar_formulario_usuario.return_value = True
+        mock_driver.rellenar_campo_nombre.return_value = True
+        mock_driver.rellenar_campo_email.return_value = True
         mock_driver.rellenar_campo_mensaje_solicitud.return_value = False
         
         service = IduService()
@@ -189,7 +221,8 @@ class TestIduServiceProcesarChipSinEstado:
         
         tabla_form_mock = Mock()
         mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
-        mock_driver.rellenar_formulario_usuario.return_value = True
+        mock_driver.rellenar_campo_nombre.return_value = True
+        mock_driver.rellenar_campo_email.return_value = True
         mock_driver.rellenar_campo_mensaje_solicitud.return_value = True
         mock_driver.click_iniciar_chat.return_value = False
         
@@ -217,7 +250,8 @@ class TestIduServiceProcesarChipSinEstado:
         
         tabla_form_mock = Mock()
         mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
-        mock_driver.rellenar_formulario_usuario.return_value = True
+        mock_driver.rellenar_campo_nombre.return_value = True
+        mock_driver.rellenar_campo_email.return_value = True
         mock_driver.rellenar_campo_mensaje_solicitud.return_value = True
         mock_driver.click_iniciar_chat.return_value = True
         
@@ -270,7 +304,8 @@ class TestIduServiceProcesarChipSinEstado:
         
         tabla_form_mock = Mock()
         mock_driver.preparar_formulario.return_value = (None, tabla_form_mock, None)
-        mock_driver.rellenar_formulario_usuario.return_value = True
+        mock_driver.rellenar_campo_nombre.return_value = True
+        mock_driver.rellenar_campo_email.return_value = True
         mock_driver.rellenar_campo_mensaje_solicitud.return_value = True
         # Primera llamada falla, segunda tiene éxito
         mock_driver.click_iniciar_chat.side_effect = [False, True]

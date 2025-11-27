@@ -2,15 +2,11 @@ import logging
 import os
 import time
 from datetime import datetime
-
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
-
 from src.google_credentials import GoogleCredentials
 from src.idu_config import IduConfig
-
-
 class UploadDrive:
     def __init__(self):
         self._config = IduConfig.load_config('config/config.json')

@@ -107,7 +107,3 @@ class TestGoogleCredentials:
         mock_exists.assert_called_with('mi/ruta/token.json')
         mock_from_file.assert_called_with('mi/ruta/token.json', scopes)
     
-
-
-# Para ejecutar:
-# pytest test_google_credentials.py -v
