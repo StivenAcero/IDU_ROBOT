@@ -103,7 +103,7 @@ class SheetService:
             logger.info(f"Índice columna {nombre_columna}: {indice}")
             return chr(65 + indice)
         except (ValueError, IndexError):
-            raise ValueError(f"No se encontró la columna {nombre_columna}")
+            raise ValueError(f"No se encontró la columna {nombre_columna}") from None
 
     def actualizar_estado_chips(self, spreadsheet_id, encabezado, chips_list, nuevo_estado="Solicitado chat IDU"):
         columna_estado = self.obtener_letra_columna(encabezado, 'ESTADO')

@@ -1,0 +1,44 @@
+[MASTER]
+ignore=venv,build,dist,__pycache__
+extension-pkg-whitelist=
+init-hook="import sys; sys.setrecursionlimit(2000)"
+
+[MESSAGES CONTROL]
+disable=
+    C0114,
+    C0115,
+    C0116,
+    R0903,
+    W0511,
+    broad-exception-caught,
+    broad-exception-raised,
+    too-many-arguments,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    consider-using-named-constant
+
+[FORMAT]
+max-line-length=120
+indent-string='    '
+
+[TYPECHECK]
+ignored-modules=
+ignored-classes=
+
+[DESIGN]
+max-parents=15
+max-attributes=20
+max-public-methods=25
+
+[REPORTS]
+reports=no
+
+[LOGGING]
+logging-modules=logging
+
+[SIMILARITIES]
+min-similarity-lines=10
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes

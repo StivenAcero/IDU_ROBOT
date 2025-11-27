@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from src.idu_config import IduConfig
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,7 +39,7 @@ class IduNavigator:
             self._driver.quit()
             raise
         except Exception as e:
-            logger.error(f"Error al navegar a la URL: {e}")
+            logger.error("Error al navegar a la URL: %s", e)
             self._driver.quit()
             raise
 
@@ -48,14 +49,14 @@ class IduNavigator:
         for i in range(num_clicks):
             try:
                 boton = wait.until(EC.element_to_be_clickable((By.ID, "end")))
-                logger.info(f"Realizando click #{i+1}")
+                logger.info("Realizando click #%s", i + 1)
                 boton.click()
                 time.sleep(1)
             except Exception as e:
-                logger.error(f"Error en click #{i+1}: {e}")
+                logger.error("Error en click #%s: %s", i + 1, e)
                 raise
 
-        logger.info(f"Se completaron {num_clicks} clicks exitosamente")
+        logger.info("Se completaron %s clicks exitosamente", num_clicks)
 
     def buscar_iframe_chat(self, timeout=15):
         logger.info("Buscando iframes en la página...")
@@ -66,13 +67,19 @@ class IduNavigator:
             )
 
             iframes = self._driver.find_elements(By.TAG_NAME, "iframe")
-            logger.info(f"Cantidad de iframes encontrados: {len(iframes)}")
+            logger.info("Cantidad de iframes encontrados: %s", len(iframes))
 
             for idx, iframe in enumerate(iframes):
                 name = iframe.get_attribute("name")
                 iframe_id = iframe.get_attribute("id")
                 src = iframe.get_attribute("src")
-                logger.debug(f"Iframe {idx+1}: name={name}, id={iframe_id}, src={src}")
+                logger.debug(
+                    "Iframe %s: name=%s, id=%s, src=%s",
+                    idx + 1,
+                    name,
+                    iframe_id,
+                    src,
+                )
 
             for iframe in iframes:
                 src = iframe.get_attribute("src")
@@ -81,11 +88,13 @@ class IduNavigator:
                     self._driver.switch_to.frame(iframe)
                     return True
 
-            logger.warning("No se encontró el iframe del chat. Continuando en el DOM principal...")
+            logger.warning(
+                "No se encontró el iframe del chat. Continuando en el DOM principal..."
+            )
             return False
 
         except Exception as e:
-            logger.error(f"Error al buscar iframes: {e}")
+            logger.error("Error al buscar iframes: %s", e)
             return False
 
     def buscar_tabla_formulario(self, timeout=15):
@@ -97,7 +106,7 @@ class IduNavigator:
             return tabla_form
 
         except Exception as e:
-            logger.error(f"No se encontró la tabla con class='form': {e}")
+            logger.error("No se encontró la tabla con class='form': %s", e)
             return None
 
     def buscar_input_username(self, tabla_form=None, timeout=15):
@@ -107,7 +116,8 @@ class IduNavigator:
             if tabla_form:
                 input_username = WebDriverWait(self._driver, timeout).until(
                     lambda d: tabla_form.find_element(
-                        By.CSS_SELECTOR, 'input.username[name="name"]'
+                        # pylint: disable=duplicate-string-formatting-argument
+                        By.CSS_SELECTOR, 'input.username[name="name"]'  
                     )
                 )
             else:
@@ -121,7 +131,7 @@ class IduNavigator:
             return input_username
 
         except Exception as e:
-            logger.error(f"No se encontró el input de usuario: {e}")
+            logger.error("No se encontró el input de usuario: %s", e)
             return None
 
     def preparar_formulario(self, timeout=15):
@@ -142,7 +152,7 @@ class IduNavigator:
         return input_username, tabla_form, en_iframe_chat
 
     def rellenar_campo_nombre(self, tabla_form, name_user, timeout=15):
-        logger.info(f"Buscando campo de nombre...")
+        logger.info("Buscando campo de nombre...")
 
         try:
             if tabla_form:
@@ -152,21 +162,22 @@ class IduNavigator:
                     )
                 )
             else:
-                logger.warning("No se proporcionó la tabla del formulario")
+                # pylint: disable=duplicate-string-formatting-argument
+                logger.warning("No se proporcionó la tabla del formulario") 
                 return False
 
-            logger.info(f"Campo de nombre encontrado. Escribiendo '{name_user}'...")
+            logger.info("Escribiendo nombre '%s'...", name_user)
             input_name.clear()
             input_name.send_keys(name_user)
-            logger.info(f"Se escribió '{name_user}' en el campo de nombre")
+            logger.info("Nombre escrito exitosamente")
             return True
 
         except Exception as e:
-            logger.error(f"Error al rellenar campo de nombre: {e}")
+            logger.error("Error al rellenar campo de nombre: %s", e)
             return False
 
     def rellenar_campo_email(self, tabla_form, email_user, timeout=15):
-        logger.info(f"Buscando campo de email...")
+        logger.info("Buscando campo de email...")
 
         try:
             if tabla_form:
@@ -179,23 +190,15 @@ class IduNavigator:
                 logger.warning("No se proporcionó la tabla del formulario")
                 return False
 
-            logger.info(f"Campo de email encontrado. Escribiendo '{email_user}'...")
+            logger.info("Escribiendo email '%s'...", email_user)
             input_email.clear()
             input_email.send_keys(email_user)
-            logger.info(f"Se escribió '{email_user}' en el campo de email")
+            logger.info("Email escrito exitosamente")
             return True
 
         except Exception as e:
-            logger.error(f"Error al rellenar campo de email: {e}")
+            logger.error("Error al rellenar campo de email: %s", e)
             return False
-
-    def rellenar_formulario_usuario(
-        self, tabla_form, name_user, email_user, timeout=15
-    ):
-        nombre_ok = self.rellenar_campo_nombre(tabla_form, name_user, timeout)
-        email_ok = self.rellenar_campo_email(tabla_form, email_user, timeout)
-
-        return nombre_ok and email_ok
 
     def rellenar_campo_mensaje_solicitud(self, tabla_form, solicitud_row, timeout=15):
         try:
@@ -209,17 +212,17 @@ class IduNavigator:
                 logger.warning("No se proporcionó la tabla del formulario")
                 return False
 
-            logger.info("Textarea de mensaje encontrado. Construyendo mensaje...")
             chips = solicitud_row.get("chips", "")
-            mensaje = f"Solicitud de paz y salvo de estos chips: {chips}"
+            mensaje = "Solicitud de paz y salvo de estos chips: %s" % chips
 
+            logger.info("Escribiendo mensaje...")
             textarea_message.clear()
             textarea_message.send_keys(mensaje)
-            logger.info("Se escribió el mensaje en el textarea")
+            logger.info("Mensaje escrito exitosamente")
             return True
 
         except Exception as e:
-            logger.error(f"Error al rellenar campo de mensaje: {e}")
+            logger.error("Error al rellenar campo de mensaje: %s", e)
             return False
 
     def click_iniciar_chat(self, timeout=15):
@@ -234,40 +237,43 @@ class IduNavigator:
             return True
 
         except Exception as e:
-            logger.error(f"No se encontró o no se pudo hacer click en 'Iniciar Chat': {e}")
+            logger.error("No se encontró o no se pudo hacer click en 'Iniciar Chat': %s", e)
             try:
                 self._driver.switch_to.default_content()
-            except:
+            except Exception:
                 pass
             return False
 
     def reiniciar_navegador(self, url):
         logger.info("Reiniciando navegador...")
+
         try:
             if self._driver:
                 self._driver.quit()
                 logger.info("Navegador cerrado")
         except Exception as e:
-            logger.warning(f"Error al cerrar navegador: {e}")
-        
+            logger.warning("Error al cerrar navegador: %s", e)
+
         time.sleep(2)
         max_intentos = 3
-        
+
         for intento in range(max_intentos):
             try:
                 self._driver = webdriver.Chrome(
-                    service=self._chrome_service, 
+                    service=self._chrome_service,
                     options=self._chrome_options
                 )
-                logger.info(f"Nuevo navegador creado (intento {intento + 1})")
+                logger.info("Nuevo navegador creado (intento %s)", intento + 1)
+
                 self._driver.get(url)
                 WebDriverWait(self._driver, 10).until(
                     EC.presence_of_element_located((By.TAG_NAME, "body"))
                 )
                 logger.info("Navegador reiniciado y página cargada correctamente")
-                return 
+                return
+
             except Exception as e:
-                logger.warning(f"Error en intento {intento + 1}: {e}")
+                logger.warning("Error en intento %s: %s", intento + 1, e)
                 if intento < max_intentos - 1:
                     time.sleep(3)
                 else:

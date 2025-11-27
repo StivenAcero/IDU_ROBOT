@@ -61,15 +61,6 @@ class FileManagements:
             return pd.DataFrame(columns=['archivos'])
         
     def actualizar_estado_descargado(self, df_archivos: pd.DataFrame) -> int:
-        """
-        Actualiza el estado a 'DESCARGADO' para los chips que coinciden con los archivos del DataFrame.
-        
-        Args:
-            df_archivos: DataFrame con columna 'archivos' que contiene los nombres de archivos descargados
-            
-        Returns:
-            int: Cantidad de chips actualizados
-        """
         if df_archivos.empty:
             self._logger.warning("DataFrame vacío, no hay archivos para actualizar")
             return 0

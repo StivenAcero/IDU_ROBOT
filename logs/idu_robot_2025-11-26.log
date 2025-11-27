@@ -1,0 +1,29 @@
+2025-11-26 23:29:18,771 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-26 23:29:18,774 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-26 23:29:18,777 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-26 23:29:18,926 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-26 23:29:19,071 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-26 23:29:19,228 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-26 23:29:19,230 - INFO - __main__ - ==== Inicio ejecución IDU Robot ====
+2025-11-26 23:29:19,230 - INFO - src.email_drive - Iniciando etiquetado - Día: 26/11/2025
+2025-11-26 23:29:20,348 - INFO - src.email_drive - Correos encontrados: 2
+2025-11-26 23:29:21,440 - INFO - src.email_drive - Resumen - Total: 2, Etiquetados: 0
+2025-11-26 23:29:21,440 - INFO - __main__ - Correos etiquetados por mes: {'exitoso': True, 'total_encontrados': 2, 'procesados': 0, 'por_mes': {'Noviembre 2025': {'total': 2, 'nuevos': 0}}}
+2025-11-26 23:29:22,009 - INFO - src.download_files_emails - Etiqueta 'DESCARGADO' encontrada con ID: Label_3
+2025-11-26 23:29:22,009 - INFO - src.download_files_emails - Buscando correos del día 2025/11/26 con etiqueta 'IDU' sin DESCARGADO
+2025-11-26 23:29:22,240 - WARNING - src.download_files_emails - No se encontraron correos nuevos con la etiqueta 'IDU' para el día 2025/11/26
+2025-11-26 23:29:22,240 - INFO - src.download_files_emails - No hay correos para procesar
+2025-11-26 23:29:22,241 - INFO - __main__ - Archivos descargados: {'total_correos': 0, 'total_adjuntos': 0, 'descargados': 0, 'fallidos': 0, 'etiquetados': 0, 'archivos': []}
+2025-11-26 23:29:22,923 - INFO - src.upload_drive - Carpeta de año encontrada: 2025 (ID: 1mihRexf7Q_uQEeM7ldTbZkkhpOSFb52j)
+2025-11-26 23:29:23,255 - INFO - src.upload_drive - Carpeta mes encontrada: 11 Noviembre (ID: 1oZa6P4mMz4mR-J50U2ihHnlosd8_4aLV)
+2025-11-26 23:29:24,917 - INFO - src.upload_drive - Archivo AAA0089WAPA.pdf subido. ID: 11yQKPHaiSPzhBTII8iNk1GvYwBwNgxFn
+2025-11-26 23:29:26,961 - INFO - src.upload_drive - Archivo AAA0089WKDE.pdf subido. ID: 1cjlDa5pA4JJQt79vN3tQa18C61ipcM9O
+2025-11-26 23:29:26,962 - INFO - src.upload_drive - Archivos subidos exitosamente: 2
+2025-11-26 23:29:26,962 - INFO - src.upload_drive - Archivos fallidos: 0
+2025-11-26 23:29:26,962 - INFO - __main__ - Archivos subidos: {'success': [{'filename': 'AAA0089WAPA.pdf', 'id': '11yQKPHaiSPzhBTII8iNk1GvYwBwNgxFn'}, {'filename': 'AAA0089WKDE.pdf', 'id': '1cjlDa5pA4JJQt79vN3tQa18C61ipcM9O'}], 'failed': []}
+2025-11-26 23:29:26,963 - INFO - src.file_managements - Se encontraron 2 archivo(s) en ./descargas
+2025-11-26 23:29:27,749 - INFO - src.sheet_service - Índice columna ESTADO: 2
+2025-11-26 23:29:27,750 - INFO - src.file_managements - Actualizando estados a DESCARGADO para 2 archivo(s)
+2025-11-26 23:29:28,375 - INFO - src.file_managements - Se actualizaron 2 chip(s) a estado DESCARGADO
+2025-11-26 23:29:28,375 - INFO - __main__ - Cantidad de chips actualizados: 2
+2025-11-26 23:29:28,375 - INFO - __main__ - ==== Fin ejecución IDU Robot ====
