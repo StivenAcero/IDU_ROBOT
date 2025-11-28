@@ -1,0 +1,57 @@
+2025-11-27 13:23:08,134 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 13:23:08,153 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 13:23:08,156 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 13:23:08,309 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 13:23:08,446 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 13:23:08,583 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 13:23:08,597 - INFO - __main__ - ==== Inicio ejecución IDU Robot ====
+2025-11-27 13:23:08,597 - INFO - src.email_drive - Iniciando etiquetado - Día: 27/11/2025
+2025-11-27 13:23:09,787 - INFO - src.email_drive - Correos encontrados: 3
+2025-11-27 13:23:11,872 - INFO - src.email_drive - Resumen - Total: 3, Etiquetados: 3
+2025-11-27 13:23:11,872 - INFO - __main__ - Correos etiquetados por mes: {'exitoso': True, 'total_encontrados': 3, 'procesados': 3, 'por_mes': {'Noviembre 2025': {'total': 3, 'nuevos': 3}}}
+2025-11-27 13:23:12,429 - INFO - src.download_files_emails - Etiqueta 'DESCARGADO' encontrada con ID: Label_3
+2025-11-27 13:23:12,430 - INFO - src.download_files_emails - Buscando correos del día 2025/11/27 con etiqueta 'IDU' sin DESCARGADO
+2025-11-27 13:23:12,646 - INFO - src.download_files_emails - Se encontraron 3 correo(s) nuevos con la etiqueta 'IDU'
+2025-11-27 13:23:12,646 - INFO - src.download_files_emails - Procesando correo: 19ac62b21faeb442
+2025-11-27 13:23:12,866 - INFO - src.download_files_emails - Correo 19ac62b21faeb442 tiene 2 adjunto(s)
+2025-11-27 13:23:12,866 - INFO - src.download_files_emails - Descargando: AAA0240YLMR.pdf
+2025-11-27 13:23:13,303 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0240YLMR.pdf
+2025-11-27 13:23:13,304 - INFO - src.download_files_emails - Descargando: AAA0202LMLF.pdf
+2025-11-27 13:23:13,706 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0202LMLF.pdf
+2025-11-27 13:23:14,205 - INFO - src.download_files_emails - Etiqueta DESCARGADO agregada al correo 19ac62b21faeb442
+2025-11-27 13:23:14,205 - INFO - src.download_files_emails - Procesando correo: 19ac624b23d327fa
+2025-11-27 13:23:14,426 - INFO - src.download_files_emails - Correo 19ac624b23d327fa tiene 3 adjunto(s)
+2025-11-27 13:23:14,426 - INFO - src.download_files_emails - Descargando: AAA0062TJPP.pdf
+2025-11-27 13:23:14,837 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0062TJPP.pdf
+2025-11-27 13:23:14,837 - INFO - src.download_files_emails - Descargando: AAA0062TBDM.pdf
+2025-11-27 13:23:15,252 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0062TBDM.pdf
+2025-11-27 13:23:15,253 - INFO - src.download_files_emails - Descargando: AAA0054HPPA.pdf
+2025-11-27 13:23:15,677 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0054HPPA.pdf
+2025-11-27 13:23:16,163 - INFO - src.download_files_emails - Etiqueta DESCARGADO agregada al correo 19ac624b23d327fa
+2025-11-27 13:23:16,163 - INFO - src.download_files_emails - Procesando correo: 19ac62359658a84b
+2025-11-27 13:23:16,377 - INFO - src.download_files_emails - Correo 19ac62359658a84b tiene 2 adjunto(s)
+2025-11-27 13:23:16,378 - INFO - src.download_files_emails - Descargando: AAA0240ZDUZ.pdf
+2025-11-27 13:23:16,760 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0240ZDUZ.pdf
+2025-11-27 13:23:16,760 - INFO - src.download_files_emails - Descargando: AAA0258NEXR.pdf
+2025-11-27 13:23:17,138 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0258NEXR.pdf
+2025-11-27 13:23:17,626 - INFO - src.download_files_emails - Etiqueta DESCARGADO agregada al correo 19ac62359658a84b
+2025-11-27 13:23:17,626 - INFO - src.download_files_emails - Resumen descarga - Correos: 3, Adjuntos: 7, Exitosos: 7, Fallidos: 0, Etiquetados: 3
+2025-11-27 13:23:17,627 - INFO - __main__ - Archivos descargados: {'total_correos': 3, 'total_adjuntos': 7, 'descargados': 7, 'fallidos': 0, 'etiquetados': 3, 'archivos': [{'nombre': 'AAA0240YLMR.pdf', 'correo_id': '19ac62b21faeb442', 'estado': 'exitoso', 'tamaño': 127501, 'ruta': './descargas\\AAA0240YLMR.pdf'}, {'nombre': 'AAA0202LMLF.pdf', 'correo_id': '19ac62b21faeb442', 'estado': 'exitoso', 'tamaño': 127496, 'ruta': './descargas\\AAA0202LMLF.pdf'}, {'nombre': 'AAA0062TJPP.pdf', 'correo_id': '19ac624b23d327fa', 'estado': 'exitoso', 'tamaño': 127496, 'ruta': './descargas\\AAA0062TJPP.pdf'}, {'nombre': 'AAA0062TBDM.pdf', 'correo_id': '19ac624b23d327fa', 'estado': 'exitoso', 'tamaño': 127496, 'ruta': './descargas\\AAA0062TBDM.pdf'}, {'nombre': 'AAA0054HPPA.pdf', 'correo_id': '19ac624b23d327fa', 'estado': 'exitoso', 'tamaño': 127476, 'ruta': './descargas\\AAA0054HPPA.pdf'}, {'nombre': 'AAA0240ZDUZ.pdf', 'correo_id': '19ac62359658a84b', 'estado': 'exitoso', 'tamaño': 127506, 'ruta': './descargas\\AAA0240ZDUZ.pdf'}, {'nombre': 'AAA0258NEXR.pdf', 'correo_id': '19ac62359658a84b', 'estado': 'exitoso', 'tamaño': 127496, 'ruta': './descargas\\AAA0258NEXR.pdf'}]}
+2025-11-27 13:23:18,323 - INFO - src.upload_drive - Carpeta de año encontrada: 2025 (ID: 1mihRexf7Q_uQEeM7ldTbZkkhpOSFb52j)
+2025-11-27 13:23:18,672 - INFO - src.upload_drive - Carpeta mes encontrada: 11 Noviembre (ID: 1oZa6P4mMz4mR-J50U2ihHnlosd8_4aLV)
+2025-11-27 13:23:20,697 - INFO - src.upload_drive - Archivo AAA0054HPPA.pdf subido. ID: 1cTntCL4uffTw9KFWHQgaqORPkKlDv8ip
+2025-11-27 13:23:22,812 - INFO - src.upload_drive - Archivo AAA0062TBDM.pdf subido. ID: 1ui_NbfNq5x90cKVWMv8dEMCluK4hmsw7
+2025-11-27 13:23:24,541 - INFO - src.upload_drive - Archivo AAA0062TJPP.pdf subido. ID: 1tFNSMqzRhNfNwsFT_t_nRHn8Q5DC-zh_
+2025-11-27 13:23:26,430 - INFO - src.upload_drive - Archivo AAA0202LMLF.pdf subido. ID: 1RlB855ilElmssjuOJWUxfE0_Klh4Vd2Y
+2025-11-27 13:23:28,207 - INFO - src.upload_drive - Archivo AAA0240YLMR.pdf subido. ID: 12Y40jy7gygRCG2tnKH2aWmwMErtpJ2-X
+2025-11-27 13:23:30,223 - INFO - src.upload_drive - Archivo AAA0240ZDUZ.pdf subido. ID: 1cCxkmpop14IlDDQCFUl8eqOgdtDyGI1v
+2025-11-27 13:23:32,358 - INFO - src.upload_drive - Archivo AAA0258NEXR.pdf subido. ID: 1nvcbqYJZbDUOLyQWzTmJeK2kyQrGY2Xa
+2025-11-27 13:23:32,358 - INFO - src.upload_drive - Archivos subidos exitosamente: 7
+2025-11-27 13:23:32,359 - INFO - src.upload_drive - Archivos fallidos: 0
+2025-11-27 13:23:32,359 - INFO - __main__ - Archivos subidos: {'success': [{'filename': 'AAA0054HPPA.pdf', 'id': '1cTntCL4uffTw9KFWHQgaqORPkKlDv8ip'}, {'filename': 'AAA0062TBDM.pdf', 'id': '1ui_NbfNq5x90cKVWMv8dEMCluK4hmsw7'}, {'filename': 'AAA0062TJPP.pdf', 'id': '1tFNSMqzRhNfNwsFT_t_nRHn8Q5DC-zh_'}, {'filename': 'AAA0202LMLF.pdf', 'id': '1RlB855ilElmssjuOJWUxfE0_Klh4Vd2Y'}, {'filename': 'AAA0240YLMR.pdf', 'id': '12Y40jy7gygRCG2tnKH2aWmwMErtpJ2-X'}, {'filename': 'AAA0240ZDUZ.pdf', 'id': '1cCxkmpop14IlDDQCFUl8eqOgdtDyGI1v'}, {'filename': 'AAA0258NEXR.pdf', 'id': '1nvcbqYJZbDUOLyQWzTmJeK2kyQrGY2Xa'}], 'failed': []}
+2025-11-27 13:23:32,360 - INFO - src.file_managements - Se encontraron 7 archivo(s) en ./descargas
+2025-11-27 13:23:33,383 - INFO - src.sheet_service - Índice columna ESTADO: 2
+2025-11-27 13:23:33,384 - INFO - src.file_managements - Actualizando estados a DESCARGADO para 7 archivo(s)
+2025-11-27 13:23:34,205 - INFO - src.file_managements - Se actualizaron 6 chip(s) a estado DESCARGADO
+2025-11-27 13:23:34,205 - INFO - __main__ - Cantidad de chips actualizados: 6
+2025-11-27 13:23:34,205 - INFO - __main__ - ==== Fin ejecución IDU Robot ====

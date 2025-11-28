@@ -2,16 +2,13 @@ from src.idu_config import IduConfig
 from src.idu_service import IduService
 from src.sheet_service import SheetService
 import logging
-from src.logs import setup_logging
-
 logger = logging.getLogger(__name__)
 
 config = IduConfig.load_config('config/config.json')
 sheet_service = SheetService()
 idu_service = IduService()
 
-def main():
-    setup_logging() 
+def main(): 
     data = sheet_service.read_sheet()
     encabezado = data[0] if data else []
     if not data:
