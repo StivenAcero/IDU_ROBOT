@@ -55,3 +55,80 @@
 2025-11-27 13:23:34,205 - INFO - src.file_managements - Se actualizaron 6 chip(s) a estado DESCARGADO
 2025-11-27 13:23:34,205 - INFO - __main__ - Cantidad de chips actualizados: 6
 2025-11-27 13:23:34,205 - INFO - __main__ - ==== Fin ejecución IDU Robot ====
+2025-11-27 21:58:12,912 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:58:13,813 - INFO - root - Chromedriver is already installed.
+2025-11-27 21:58:15,361 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:58:16,552 - INFO - src.idu_service - Todos los registros tienen ESTADO asignado
+2025-11-27 21:59:49,746 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:59:49,762 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:59:49,765 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:59:49,925 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:59:50,065 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:59:50,205 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 21:59:50,219 - INFO - __main__ - ==== Inicio ejecución IDU Robot ====
+2025-11-27 21:59:50,219 - INFO - src.email_drive - Iniciando etiquetado - Día: 27/11/2025
+2025-11-27 21:59:51,727 - INFO - src.email_drive - Correos encontrados: 4
+2025-11-27 21:59:54,281 - INFO - src.email_drive - Resumen - Total: 4, Etiquetados: 1
+2025-11-27 21:59:54,281 - INFO - __main__ - Correos etiquetados por mes: {'exitoso': True, 'total_encontrados': 4, 'procesados': 1, 'por_mes': {'Noviembre 2025': {'total': 4, 'nuevos': 1}}}
+2025-11-27 21:59:54,856 - INFO - src.download_files_emails - Etiqueta 'DESCARGADO' encontrada con ID: Label_3
+2025-11-27 21:59:54,856 - INFO - src.download_files_emails - Buscando correos del día 2025/11/27 con etiqueta 'IDU' sin DESCARGADO
+2025-11-27 21:59:55,075 - INFO - src.download_files_emails - Se encontraron 1 correo(s) nuevos con la etiqueta 'IDU'
+2025-11-27 21:59:55,075 - INFO - src.download_files_emails - Procesando correo: 19ac74fa18a0037c
+2025-11-27 21:59:55,296 - INFO - src.download_files_emails - Correo 19ac74fa18a0037c tiene 2 adjunto(s)
+2025-11-27 21:59:55,296 - INFO - src.download_files_emails - Descargando: AAA0226ZBRU.pdf
+2025-11-27 21:59:55,738 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0226ZBRU.pdf
+2025-11-27 21:59:55,738 - INFO - src.download_files_emails - Descargando: AAA0283WMUH.pdf
+2025-11-27 21:59:56,209 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0283WMUH.pdf
+2025-11-27 21:59:56,705 - INFO - src.download_files_emails - Etiqueta DESCARGADO agregada al correo 19ac74fa18a0037c
+2025-11-27 21:59:56,705 - INFO - src.download_files_emails - Resumen descarga - Correos: 1, Adjuntos: 2, Exitosos: 2, Fallidos: 0, Etiquetados: 1
+2025-11-27 21:59:56,705 - INFO - __main__ - Archivos descargados: {'total_correos': 1, 'total_adjuntos': 2, 'descargados': 2, 'fallidos': 0, 'etiquetados': 1, 'archivos': [{'nombre': 'AAA0226ZBRU.pdf', 'correo_id': '19ac74fa18a0037c', 'estado': 'exitoso', 'tamaño': 127501, 'ruta': './descargas\\AAA0226ZBRU.pdf'}, {'nombre': 'AAA0283WMUH.pdf', 'correo_id': '19ac74fa18a0037c', 'estado': 'exitoso', 'tamaño': 127496, 'ruta': './descargas\\AAA0283WMUH.pdf'}]}
+2025-11-27 21:59:57,453 - INFO - src.upload_drive - Carpeta de año encontrada: 2025 (ID: 1mihRexf7Q_uQEeM7ldTbZkkhpOSFb52j)
+2025-11-27 21:59:57,791 - INFO - src.upload_drive - Carpeta mes encontrada: 11 Noviembre (ID: 1oZa6P4mMz4mR-J50U2ihHnlosd8_4aLV)
+2025-11-27 21:59:59,979 - INFO - src.upload_drive - Archivo AAA0226ZBRU.pdf subido. ID: 10luS6PFRA4aAYKc2YGKbj7AQGtlBi2nw
+2025-11-27 22:00:01,842 - INFO - src.upload_drive - Archivo AAA0283WMUH.pdf subido. ID: 1vYnFZ_LjwpsX_f6WGjvD6HjXRAFF30eN
+2025-11-27 22:00:01,843 - INFO - src.upload_drive - Archivos subidos exitosamente: 2
+2025-11-27 22:00:01,843 - INFO - src.upload_drive - Archivos fallidos: 0
+2025-11-27 22:00:01,843 - INFO - __main__ - Archivos subidos: {'success': [{'filename': 'AAA0226ZBRU.pdf', 'id': '10luS6PFRA4aAYKc2YGKbj7AQGtlBi2nw'}, {'filename': 'AAA0283WMUH.pdf', 'id': '1vYnFZ_LjwpsX_f6WGjvD6HjXRAFF30eN'}], 'failed': []}
+2025-11-27 22:00:01,844 - INFO - src.file_managements - Se encontraron 2 archivo(s) en ./descargas
+2025-11-27 22:00:02,443 - INFO - src.sheet_service - Índice columna ESTADO: 2
+2025-11-27 22:00:02,444 - INFO - src.file_managements - Actualizando estados a DESCARGADO para 2 archivo(s)
+2025-11-27 22:00:03,197 - INFO - src.file_managements - Se actualizaron 2 chip(s) a estado DESCARGADO
+2025-11-27 22:00:03,197 - INFO - __main__ - Cantidad de chips actualizados: 2
+2025-11-27 22:00:03,197 - INFO - __main__ - ==== Fin ejecución IDU Robot ====
+2025-11-27 22:18:07,382 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 22:18:07,386 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 22:18:07,389 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 22:18:07,556 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 22:18:07,709 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 22:18:07,854 - INFO - googleapiclient.discovery_cache - file_cache is only supported with oauth2client<4.0.0
+2025-11-27 22:18:07,856 - INFO - __main__ - ==== Inicio ejecución IDU Robot ====
+2025-11-27 22:18:07,856 - INFO - __main__ - El directorio  no existe. No hay archivos para eliminar.
+2025-11-27 22:18:07,856 - INFO - src.email_drive - Iniciando etiquetado - Día: 27/11/2025
+2025-11-27 22:18:09,048 - INFO - src.email_drive - Correos encontrados: 4
+2025-11-27 22:18:11,479 - INFO - src.email_drive - Resumen - Total: 4, Etiquetados: 1
+2025-11-27 22:18:11,479 - INFO - __main__ - Correos etiquetados por mes: {'exitoso': True, 'total_encontrados': 4, 'procesados': 1, 'por_mes': {'Noviembre 2025': {'total': 4, 'nuevos': 1}}}
+2025-11-27 22:18:12,034 - INFO - src.download_files_emails - Etiqueta 'DESCARGADO' encontrada con ID: Label_3
+2025-11-27 22:18:12,035 - INFO - src.download_files_emails - Buscando correos del día 2025/11/27 con etiqueta 'IDU' sin DESCARGADO
+2025-11-27 22:18:12,259 - INFO - src.download_files_emails - Se encontraron 1 correo(s) nuevos con la etiqueta 'IDU'
+2025-11-27 22:18:12,259 - INFO - src.download_files_emails - Procesando correo: 19ac74fa18a0037c
+2025-11-27 22:18:12,465 - INFO - src.download_files_emails - Correo 19ac74fa18a0037c tiene 2 adjunto(s)
+2025-11-27 22:18:12,465 - INFO - src.download_files_emails - Descargando: AAA0226ZBRU.pdf
+2025-11-27 22:18:12,849 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0226ZBRU.pdf
+2025-11-27 22:18:12,849 - INFO - src.download_files_emails - Descargando: AAA0283WMUH.pdf
+2025-11-27 22:18:13,105 - INFO - src.download_files_emails - Archivo descargado exitosamente: ./descargas\AAA0283WMUH.pdf
+2025-11-27 22:18:13,593 - INFO - src.download_files_emails - Etiqueta DESCARGADO agregada al correo 19ac74fa18a0037c
+2025-11-27 22:18:13,593 - INFO - src.download_files_emails - Resumen descarga - Correos: 1, Adjuntos: 2, Exitosos: 2, Fallidos: 0, Etiquetados: 1
+2025-11-27 22:18:13,593 - INFO - __main__ - Archivos descargados: {'total_correos': 1, 'total_adjuntos': 2, 'descargados': 2, 'fallidos': 0, 'etiquetados': 1, 'archivos': [{'nombre': 'AAA0226ZBRU.pdf', 'correo_id': '19ac74fa18a0037c', 'estado': 'exitoso', 'tamaño': 127501, 'ruta': './descargas\\AAA0226ZBRU.pdf'}, {'nombre': 'AAA0283WMUH.pdf', 'correo_id': '19ac74fa18a0037c', 'estado': 'exitoso', 'tamaño': 127496, 'ruta': './descargas\\AAA0283WMUH.pdf'}]}
+2025-11-27 22:18:14,222 - INFO - src.upload_drive - Carpeta de año encontrada: 2025 (ID: 1mihRexf7Q_uQEeM7ldTbZkkhpOSFb52j)
+2025-11-27 22:18:14,475 - INFO - src.upload_drive - Carpeta mes encontrada: 11 Noviembre (ID: 1oZa6P4mMz4mR-J50U2ihHnlosd8_4aLV)
+2025-11-27 22:18:16,586 - INFO - src.upload_drive - Archivo AAA0226ZBRU.pdf subido. ID: 1slL-olbrjS0Xuxl_lcs5upxg_QLE5_uc
+2025-11-27 22:18:18,496 - INFO - src.upload_drive - Archivo AAA0283WMUH.pdf subido. ID: 1wGTj9_Yh_OjqmVcceu0ID4uRy5ifsnCd
+2025-11-27 22:18:18,497 - INFO - src.upload_drive - Archivos subidos exitosamente: 2
+2025-11-27 22:18:18,497 - INFO - src.upload_drive - Archivos fallidos: 0
+2025-11-27 22:18:18,497 - INFO - __main__ - Archivos subidos: {'success': [{'filename': 'AAA0226ZBRU.pdf', 'id': '1slL-olbrjS0Xuxl_lcs5upxg_QLE5_uc'}, {'filename': 'AAA0283WMUH.pdf', 'id': '1wGTj9_Yh_OjqmVcceu0ID4uRy5ifsnCd'}], 'failed': []}
+2025-11-27 22:18:18,498 - INFO - src.file_managements - Se encontraron 2 archivo(s) en ./descargas
+2025-11-27 22:18:19,084 - INFO - src.sheet_service - Índice columna ESTADO: 2
+2025-11-27 22:18:19,085 - INFO - src.file_managements - Actualizando estados a DESCARGADO para 2 archivo(s)
+2025-11-27 22:18:19,706 - INFO - src.file_managements - Se actualizaron 2 chip(s) a estado DESCARGADO
+2025-11-27 22:18:19,706 - INFO - __main__ - Cantidad de chips actualizados: 2
+2025-11-27 22:18:19,706 - INFO - __main__ - ==== Fin ejecución IDU Robot ====
